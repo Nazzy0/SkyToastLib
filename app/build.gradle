@@ -1,6 +1,6 @@
 plugins {
     id 'com.android.library'
-    id 'maven-publish'
+    id 'maven-publish'  // Required for JitPack
 }
 
 android {
@@ -10,6 +10,8 @@ android {
     defaultConfig {
         minSdk 23
         targetSdk 34
+        versionCode 1
+        versionName "1.0"  // Must match Git tag (e.g., v1.0)
     }
 
     buildTypes {
@@ -20,8 +22,22 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17  // Must be Java 17 for AGP 8.0+
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+// ===== JitPack Publishing Setup =====
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.github.Nazzy0'  // Your GitHub username
+                artifactId = 'SkyToastLib'      // Your repo name
+                version = '1.0'                 // Must match versionName & Git tag
+            }
+        }
     }
 }
 
